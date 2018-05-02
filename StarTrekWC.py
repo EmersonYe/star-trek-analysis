@@ -1,10 +1,10 @@
 #!/usr/bin/python
+import csv
 import operator
 import os
 import re
 import glob
 
-file = open("/Users/emersonsjsu/Downloads/ScriptsTNG/102.txt", "r")
 picard = {}
 troi = {}
 riker = {}
@@ -13,11 +13,12 @@ data = {}
 geordi = {}
 wesley = {}
 beverly = {}
-names = {"PICARD", "TROI", "RIKER", "WORF", "DATA", "GEORDIE", "WESLEY", "BEVERLY"}
+characterDicts = [picard, troi, riker, worf, data, geordi, wesley, beverly]
+names = ["PICARD", "TROI", "RIKER", "WORF", "DATA", "GEORDI", "WESLEY", "BEVERLY"]
+commonWords = {"the", "be", "to", "of", "and", "in", "that", "have", "i", "it", "for", "not", "on", "with", "he", "as",
+               "you", "do", "at", "", "a", "is", "by", "from"}
 
-os.chdir("/Users/emersonsjsu/Downloads/ScriptsTNG/")
-for filePath in glob.glob("*.txt"):
-    print(filePath)
+for filePath in glob.glob("/Users/emersonsjsu/Downloads/ScriptsTNG/*.txt"):
     file = open(filePath, "r", encoding="utf-8", errors="ignore")
     lines = file.readlines()
     for index, line in enumerate(lines):
@@ -92,8 +93,11 @@ for filePath in glob.glob("*.txt"):
                     dialogue = lines[dialogueIndex]
     file.close()
 
+for characterDict in characterDicts:
+    for commonWord in commonWords:
+        del characterDict[commonWord]
+
 picardSorted = sorted(picard.items(), key=operator.itemgetter(1), reverse=True)
-'''
 troiSorted = sorted(troi.items(), key=operator.itemgetter(1), reverse=True)
 rikerSorted = sorted(riker.items(), key=operator.itemgetter(1), reverse=True)
 worfSorted = sorted(worf.items(), key=operator.itemgetter(1), reverse=True)
@@ -101,7 +105,58 @@ dataSorted = sorted(data.items(), key=operator.itemgetter(1), reverse=True)
 geordiSorted = sorted(geordi.items(), key=operator.itemgetter(1), reverse=True)
 wesleySorted = sorted(wesley.items(), key=operator.itemgetter(1), reverse=True)
 beverlySorted = sorted(beverly.items(), key=operator.itemgetter(1), reverse=True)
-'''
 
+sortedLists = [picardSorted, troiSorted, rikerSorted, worfSorted, dataSorted, geordiSorted, wesleySorted, beverlySorted]
+
+'''
 for k, v in picardSorted:
     print("(" + str(k) + "," + str(v) + ")")
+for k, v in troiSorted:
+    print("(" + str(k) + "," + str(v) + ")")
+for k, v in rikerSorted:
+    print("(" + str(k) + "," + str(v) + ")")
+for k, v in worfSorted:
+    print("(" + str(k) + "," + str(v) + ")")
+for k, v in dataSorted:
+    print("(" + str(k) + "," + str(v) + ")")
+for k, v in geordiSorted:
+    print("(" + str(k) + "," + str(v) + ")")
+for k, v in wesleySorted:
+    print("(" + str(k) + "," + str(v) + ")")
+for k, v in beverlySorted:
+    print("(" + str(k) + "," + str(v) + ")")
+'''
+os.chdir("wcOutput/")
+
+w = csv.writer(open("picard.csv", "w"))
+w.writerows(picardSorted)
+for k, v in picard.items():
+    w.writerow([k, v])
+w = csv.writer(open("troi.csv", "w"))
+w.writerows(troiSorted)
+for k, v in troi.items():
+    w.writerow([k, v])
+w = csv.writer(open("riker.csv", "w"))
+w.writerows(rikerSorted)
+for k, v in riker.items():
+    w.writerow([k, v])
+w = csv.writer(open("worf.csv", "w"))
+w.writerows(worfSorted)
+for k, v in worf.items():
+    w.writerow([k, v])
+w = csv.writer(open("data.csv", "w"))
+w.writerows(dataSorted)
+for k, v in data.items():
+    w.writerow([k, v])
+w = csv.writer(open("geordi.csv", "w"))
+w.writerows(geordiSorted)
+for k, v in geordi.items():
+    w.writerow([k, v])
+w = csv.writer(open("wesley.csv", "w"))
+w.writerows(wesleySorted)
+for k, v in wesley.items():
+    w.writerow([k, v])
+w = csv.writer(open("beverly.csv", "w"))
+w.writerows(beverlySorted)
+for k, v in beverly.items():
+    w.writerow([k, v])
